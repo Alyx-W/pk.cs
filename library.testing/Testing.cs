@@ -13,7 +13,7 @@ namespace library.testing
         {
             var client = new PKClient();
             var member = client.GetMember("cewel");
-            Console.WriteLine(member.ToJson());
+            Console.WriteLine(member);
             Assert.IsType<Member>(member);
         }
         /*
