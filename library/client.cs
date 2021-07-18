@@ -5,7 +5,7 @@ using RestSharp;
 namespace PluralkitAPI
 {
     /// <summary>The Client class that handles all requests.</summary>
-    /// <value>property-description</value>
+    /// <param name="token">A system's pluralkit authorization token. Optional.</param>
     public class PKClient
     {
         public string? token;
