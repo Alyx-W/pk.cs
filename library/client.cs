@@ -5,9 +5,8 @@ using RestSharp.Authenticators;
 
 namespace PluralkitCore
 {
-    /// <summary>
-    /// The Client class that handles all requests.
-    /// </summary>
+    /// <summary>The Client class that handles all requests.</summary>
+    /// <value>property-description</value>
     public class PKClient
     {
         public string? token;

@@ -13,14 +13,17 @@ namespace library.testing
         {
             var client = new PKClient();
             var member = client.GetMember("cewel");
-            if (member.AvatarUrl != null) { 
-                Console.WriteLine(member.AvatarUrl.ToString());
-                Console.ReadLine();
-            } else { 
-                Console.WriteLine(member.ID);
-                Console.ReadLine();
-            }
+            Console.WriteLine(member.ToJson());
             Assert.IsType<Member>(member);
         }
+        /*
+        [Fact]
+        public void TestingSetMember() 
+        { 
+            var client = new PKClient("");
+            var member = client.EditMember("cewel");
+
+            Assert.IsType<Member>(member);
+        } */
     }
 }
