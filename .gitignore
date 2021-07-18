@@ -1,2 +1,2 @@
-library/bin/*
-library.testing/bin/*
+library/bin/
+library.testing/bin/
