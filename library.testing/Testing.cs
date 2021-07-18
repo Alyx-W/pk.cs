@@ -2,7 +2,8 @@ using System;
 using Models;
 using Xunit;
 using library;
-using PluralkitAPI;
+using PluralkitAPI.Client;
+using PluralkitAPI.Models;
 
 namespace library.testing
 {
