@@ -9,7 +9,7 @@ namespace Models {
         public string ID { get; } = null!;
         /// <summary>The system name.</summary>
         [JsonProperty("name")]
-        public string Name { get; } = null!;
+        public string Name { get; }
         /// <summary>The system's description. Defaults to null.</summary>
         [JsonProperty("description")]
         public string? Description { get; }

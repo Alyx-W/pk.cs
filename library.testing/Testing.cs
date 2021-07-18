@@ -2,7 +2,7 @@ using System;
 using Models;
 using Xunit;
 using library;
-using PluralkitCore;
+using PluralkitAPI;
 
 namespace library.testing
 {
@@ -11,7 +11,7 @@ namespace library.testing
         [Fact]
         public void TestingGetMember()
         {
-            var client = new PKClient();
+            PKClient client = new PKClient();
             var member = client.GetMember("cewel");
             Console.WriteLine(member);
             Assert.IsType<Member>(member);

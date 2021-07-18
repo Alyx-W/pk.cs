@@ -1,9 +1,8 @@
 ﻿using System;
 using Models;
 using RestSharp;
-using RestSharp.Authenticators;
 
-namespace PluralkitCore
+namespace PluralkitAPI
 {
     /// <summary>The Client class that handles all requests.</summary>
     /// <value>property-description</value>
