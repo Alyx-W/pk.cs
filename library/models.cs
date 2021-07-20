@@ -39,8 +39,24 @@ namespace PluralkitAPI {
             [JsonProperty("front_history_privacy")]
             public string? FrontHistoryPrivacy { get; set; }
 
-            public static System FromJson(string json) {
-                return JsonConvert.DeserializeObject <System> (json);
+            public static Models.System FromJson(string json) {
+                var jsonDict = JsonConvert.DeserializeObject <Dictionary<string, object?>> (json);
+                if (jsonDict["tz"] != null) {
+                    jsonDict["tz"] = TimeZoneInfo.FindSystemTimeZoneById(jsonDict["tz"].ToString());
+                }
+                var reJson = JsonConvert.SerializeObject(jsonDict);
+                return JsonConvert.DeserializeObject<Models.System>(reJson);
+            }
+            public static Models.System FromDict(Dictionary<string, object> dict) {
+                json = JsonConvert.SerializeObject(dict);
+                return JsonConvert.DeserializeObject<Models.System>(json);
+            }
+            public string ToJson() {
+                return JsonConvert.SerializeObject(this);
+            }
+            public Dictionary<string, object> ToDict() {
+                string json = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
         }
         public class Member {
@@ -93,8 +109,22 @@ namespace PluralkitAPI {
             [JsonProperty("metadata_privacy")]
             public string? MetaDataPrivacy { get; set; }
 
+            /// <summary>Turns a json string from the API into a <see cref="Member"/></summary>
+            /// <param name="json">The json string</param>
+            /// <returns> A <see cref="Member"/> object.</returns>
             public static Member FromJson(string json) {
-                return JsonConvert.DeserializeObject <Member> (json);
+               return JsonConvert.DeserializeObject<Member>(json);
+            }
+            public static Member FromDict(Dictionary<string, object> dict) {
+                json = JsonConvert.SerializeObject(dict);
+                return JsonConvert.DeserializeObject<Member>(json);
+            }
+            public string ToJson() {
+                return JsonConvert.SerializeObject(this);
+            }
+            public Dictionary<string, object> ToDict() {
+                string json = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
         }
         public class ProxyTag {
@@ -104,6 +134,22 @@ namespace PluralkitAPI {
             /// <summary>The suffix of the tags.</summary>
             [JsonProperty("suffix")]
             public string? Suffix { get; set; }
+
+            /// <summary>Turns a json string from the API into a <see cref="ProxyTag"/></summary>
+            public static ProxyTag FromJson(string json) {
+               return JsonConvert.DeserializeObject<ProxyTag>(json);
+            }
+            public static ProxyTag FromDict(Dictionary<string, object> dict) {
+                json = JsonConvert.SerializeObject(dict);
+                return JsonConvert.DeserializeObject<ProxyTag>(json);
+            }
+            public string ToJson() {
+                return JsonConvert.SerializeObject(this);
+            }
+            public Dictionary<string, object> ToDict() {
+                string json = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            }
         }
         public class Switches {
             /// <summary>The time the switch was logged at.</summary>
@@ -112,6 +158,22 @@ namespace PluralkitAPI {
             /// <summary>The members (IDs) currently fronting at the time of the switch.</summary>
             [JsonProperty("members")]
             public List<string>  Members { get; set; } = null!;
+
+            public static Switches FromJson(string json) {
+               return JsonConvert.DeserializeObject<Switches>(json);
+            }
+            public static Switches FromDict(Dictionary<string, object> dict) {
+                json = JsonConvert.SerializeObject(dict);
+                return JsonConvert.DeserializeObject<Switches>(json);
+            }
+            public string ToJson() {
+                return JsonConvert.SerializeObject(this);
+            }
+            public Dictionary<string, object> ToDict() {
+                string json = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            }
+            
         }
         public class Fronters {
             /// <summary>The the most recent switch was logged at.</summary>
@@ -120,6 +182,21 @@ namespace PluralkitAPI {
             /// <summary>The members (objects) currently fronting at the time of the query.</summary>
             [JsonProperty("members")]
             public List<Member> Members { get; set; }  = null!;
+
+            public static Fronters FromJson(string json) {
+               return JsonConvert.DeserializeObject<Fronters>(json);
+            }
+            public static Fronters FromDict(Dictionary<string, object> dict) {
+                json = JsonConvert.SerializeObject(dict);
+                return JsonConvert.DeserializeObject<Fronters>(json);
+            }
+            public string ToJson() {
+                return JsonConvert.SerializeObject(this);
+            }
+            public Dictionary<string, object> ToDict() {
+                string json = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            }
         }
         public class Message {
             /// <summary>The time the message was sent at.</summary>
@@ -143,6 +220,21 @@ namespace PluralkitAPI {
             /// <summary>The member that sent the message.</summary>
             [JsonProperty("member")]
             public Member Member { get; set; } = null!;
+
+            public static Message FromJson(string json) {
+               return JsonConvert.DeserializeObject<Message>(json);
+            }
+            public static Message FromDict(Dictionary<string, object> dict) {
+                json = JsonConvert.SerializeObject(dict);
+                return JsonConvert.DeserializeObject<Message>(json);
+            }
+            public string ToJson() {
+                return JsonConvert.SerializeObject(this);
+            }
+            public Dictionary<string, object> ToDict() {
+                string json = JsonConvert.SerializeObject(this);
+                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            }
         }
     }
 }
