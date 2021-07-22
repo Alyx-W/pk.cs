@@ -44,21 +44,22 @@ namespace PluralkitAPI {
                 if (jsonDict["tz"] != null) {
                     jsonDict["tz"] = TimeZoneInfo.FindSystemTimeZoneById(jsonDict["tz"].ToString());
                 }
-                var reJson = JsonConvert.SerializeObject(jsonDict);
+                string reJson = JsonConvert.SerializeObject(jsonDict);
                 return JsonConvert.DeserializeObject<Models.System>(reJson);
             }
             public static Models.System FromDict(Dictionary<string, object> dict) {
-                json = JsonConvert.SerializeObject(dict);
+                var json = JsonConvert.SerializeObject(dict);
                 return JsonConvert.DeserializeObject<Models.System>(json);
             }
             public string ToJson() {
                 return JsonConvert.SerializeObject(this);
             }
-            public Dictionary<string, object> ToDict() {
+            public Dictionary<string, object?> ToDict() {
                 string json = JsonConvert.SerializeObject(this);
-                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                return JsonConvert.DeserializeObject<Dictionary<string, object?>>(json);
             }
         }
+
         public class Member {
             /// <summary>The 5 character unique identifier. Automatically generated at creation. Non-patchable.</summary>
             [JsonProperty("id")]
@@ -116,7 +117,7 @@ namespace PluralkitAPI {
                return JsonConvert.DeserializeObject<Member>(json);
             }
             public static Member FromDict(Dictionary<string, object> dict) {
-                json = JsonConvert.SerializeObject(dict);
+                var json = JsonConvert.SerializeObject(dict);
                 return JsonConvert.DeserializeObject<Member>(json);
             }
             public string ToJson() {
@@ -127,6 +128,7 @@ namespace PluralkitAPI {
                 return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
         }
+        
         public class ProxyTag {
             /// <summary>The prefix of the tags.</summary>
             [JsonProperty("prefix")]
@@ -140,7 +142,7 @@ namespace PluralkitAPI {
                return JsonConvert.DeserializeObject<ProxyTag>(json);
             }
             public static ProxyTag FromDict(Dictionary<string, object> dict) {
-                json = JsonConvert.SerializeObject(dict);
+                var json = JsonConvert.SerializeObject(dict);
                 return JsonConvert.DeserializeObject<ProxyTag>(json);
             }
             public string ToJson() {
@@ -151,6 +153,7 @@ namespace PluralkitAPI {
                 return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
         }
+
         public class Switches {
             /// <summary>The time the switch was logged at.</summary>
             [JsonProperty("timestamp")]
@@ -163,7 +166,7 @@ namespace PluralkitAPI {
                return JsonConvert.DeserializeObject<Switches>(json);
             }
             public static Switches FromDict(Dictionary<string, object> dict) {
-                json = JsonConvert.SerializeObject(dict);
+                var json = JsonConvert.SerializeObject(dict);
                 return JsonConvert.DeserializeObject<Switches>(json);
             }
             public string ToJson() {
@@ -173,8 +176,8 @@ namespace PluralkitAPI {
                 string json = JsonConvert.SerializeObject(this);
                 return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
-            
         }
+
         public class Fronters {
             /// <summary>The the most recent switch was logged at.</summary>
             [JsonProperty("timestamp")]
@@ -187,7 +190,7 @@ namespace PluralkitAPI {
                return JsonConvert.DeserializeObject<Fronters>(json);
             }
             public static Fronters FromDict(Dictionary<string, object> dict) {
-                json = JsonConvert.SerializeObject(dict);
+                var json = JsonConvert.SerializeObject(dict);
                 return JsonConvert.DeserializeObject<Fronters>(json);
             }
             public string ToJson() {
@@ -198,6 +201,7 @@ namespace PluralkitAPI {
                 return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
         }
+
         public class Message {
             /// <summary>The time the message was sent at.</summary>
             [JsonProperty("timestamp")]
@@ -225,7 +229,7 @@ namespace PluralkitAPI {
                return JsonConvert.DeserializeObject<Message>(json);
             }
             public static Message FromDict(Dictionary<string, object> dict) {
-                json = JsonConvert.SerializeObject(dict);
+                var json = JsonConvert.SerializeObject(dict);
                 return JsonConvert.DeserializeObject<Message>(json);
             }
             public string ToJson() {

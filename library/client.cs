@@ -1,6 +1,7 @@
 ﻿using System;
 using PluralkitAPI.Models;
 using RestSharp;
+using Newtonsoft.Json;
 
 namespace PluralkitAPI
 {
@@ -8,14 +9,14 @@ namespace PluralkitAPI
         /// <summary>The Client class that handles all requests.</summary>
         /// <param name="token">A system's pluralkit authorization token. Optional.</param>
         public class PKClient
-        {
+        {   
             public string? token;
-            RestClient client = new RestClient("https://api.pluralkit.me/v1/");
+            private IRestClient client { get; set; }
 
-            private IRestRequest AddHeaders(IRestRequest request, bool ContentHeader) { 
-                request.AddHeader("Authorization", token);
-                if (ContentHeader) request.AddHeader("Content-Type", "application/json");
-                return request;
+            public PKClient(string? token) {
+                this.token = token ?? "null";
+                this.client = new RestClient("https://api.pluralkit.me/v1/")
+                    .AddDefaultHeader("Authorization", this.token);
             }
             
             /// <summary> Fetches the specified system. </summary>
@@ -26,17 +27,19 @@ namespace PluralkitAPI
                 IRestRequest request;
                 if (system == null && token != null) { 
                     request = new RestRequest("s/");
-                } else if (system.Length == 5 && system != null) {
+                } else if (system != null) {
+                    if (system.Length == 5) {
                     request = new RestRequest("s/{system}")
                         .AddUrlSegment("system", system);
-                } else if ((system.Length ==  17 || system.Length == 18 || system.Length == 19) && system != null) { 
+                    } else if (system.Length ==  17 || system.Length == 18 || system.Length == 19) {
                     request = new RestRequest("a/{system}")
                         .AddUrlSegment("system", system);
+                    } else {
+                        throw new Exception("Must be a system ID, discord user ID, or null to use the system associated with the token you may have passed.");
+                    }
                 } else {
                     throw new Exception("Must be a system ID, discord user ID, or null to use the system associated with the token you may have passed.");
                 }
-                
-                request = AddHeaders(request, false);
 
                 var response = client.Get(request);
                 switch (((int)response.StatusCode)) {
@@ -49,13 +52,15 @@ namespace PluralkitAPI
                 }
                 return Models.System.FromJson(response.Content);
             } 
+
             /// <summary>Edits the system associated with the token passed.</summary>
             /// <param name="system">The <see cref="System"/> object to change your system to match.</param>
             /// <returns>The updated <see cref="System"/> object.</returns>
-            public Models.System EditSystem(Models.System system) {
-                var request = new RestRequest("s/");
-                
-                var response = client.Patch(request);
+            public Models.System SetSystem(Models.System system) {
+                var request = new RestRequest("s/", Method.PATCH)
+                    .AddJsonBody(JsonConvert.SerializeObject(system))
+                    .AddHeader("Content-Type", "application/json");
+                var response = client.Execute(request);
 
                 switch (((int)response.StatusCode)) { 
                     case 403:
@@ -65,6 +70,7 @@ namespace PluralkitAPI
                 }
                 return Models.System.FromJson(response.Content);
             }
+            
             /// <summary>Gets the specified member.</summary>
             /// <param name="member"> The member to get, must be a pluralkit member id." </param>
             /// <returns>The fetched <see cref="Member"/> object.</returns>
