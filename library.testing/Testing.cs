@@ -1,18 +1,21 @@
 using System;
+using System.IO;
 using Xunit;
+using Xunit.Abstractions;
+using PluralkitAPI.Environment;
 using PluralkitAPI.Client;
-using PluralkitAPI.Models;
-using System.Collections.Generic;
 
 
 namespace library.testing
 {
     public class Test
-    {      
+    {     
         private string token { get; set; }
-        public Test() { 
-            System.Environment.SetEnvironmentVariable("token", "hah lol");
 
+        public Test() { 
+            var root = Directory.GetCurrentDirectory();
+            var dotenv = Path.Combine(root, ".env");
+            DotEnv.Load(dotenv);
             this.token = System.Environment.GetEnvironmentVariable("token");
         }
 
@@ -24,6 +27,7 @@ namespace library.testing
 
             Assert.IsType<PluralkitAPI.Models.System> (system);
         }
+        
         [Fact]
         public void TestingSetSystem()
         {

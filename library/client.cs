@@ -60,6 +60,7 @@ namespace PluralkitAPI
                 var request = new RestRequest("s/", Method.PATCH)
                     .AddJsonBody(JsonConvert.SerializeObject(system))
                     .AddHeader("Content-Type", "application/json");
+                
                 var response = client.Execute(request);
 
                 switch (((int)response.StatusCode)) { 
@@ -68,8 +69,19 @@ namespace PluralkitAPI
                     case 401: 
                         throw new Exception("Unauthorized.");
                 }
+                try {
                 return Models.System.FromJson(response.Content);
+                } catch {
+                    throw new Exception("Response Code: " + ((int)response.StatusCode) + "\nResponse Content: " + response.Content);
+                }
             }
+            /*
+            public string GetSwitches(string system)
+            {
+                var request = new RestRequest("s/switches");
+
+            } 
+            */
             
             /// <summary>Gets the specified member.</summary>
             /// <param name="member"> The member to get, must be a pluralkit member id." </param>
@@ -89,12 +101,6 @@ namespace PluralkitAPI
                 }
                 return Models.Member.FromJson(response.Content);
             }
-        /*
-        public string GetSwitches(string system)
-        {
-            var request = new RestRequest("s/switches");
-
-        } */
         }
     }
 }

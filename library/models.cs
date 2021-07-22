@@ -41,7 +41,7 @@ namespace PluralkitAPI {
 
             public static Models.System FromJson(string json) {
                 var jsonDict = JsonConvert.DeserializeObject <Dictionary<string, object?>> (json);
-                if (jsonDict["tz"] != null) {
+                if (jsonDict["tz"] != null) ) {
                     jsonDict["tz"] = TimeZoneInfo.FindSystemTimeZoneById(jsonDict["tz"].ToString());
                 }
                 string reJson = JsonConvert.SerializeObject(jsonDict);
@@ -49,14 +49,19 @@ namespace PluralkitAPI {
             }
             public static Models.System FromDict(Dictionary<string, object> dict) {
                 var json = JsonConvert.SerializeObject(dict);
-                return JsonConvert.DeserializeObject<Models.System>(json);
+                return FromJson(json);
             }
             public string ToJson() {
-                return JsonConvert.SerializeObject(this);
+                var json = JsonConvert.SerializeObject(this);
+                var jsonDict = JsonConvert.DeserializeObject <Dictionary<string, object?>> (json);
+                if (jsonDict["tz"].GetType() == typeof(TimeZoneInfo) ) {
+                    jsonDict["tz"] = jsonDict["tz"].Id;
+                }
+                return JsonConvert.SerializeObject(jsonDict);
             }
             public Dictionary<string, object?> ToDict() {
-                string json = JsonConvert.SerializeObject(this);
-                return JsonConvert.DeserializeObject<Dictionary<string, object?>>(json);
+                var json = JsonConvert.SerializeObject(this);
+                return ToJson(json);
             }
         }
 
