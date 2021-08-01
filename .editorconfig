@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CS8603: Possible null reference return.
+dotnet_diagnostic.CS8603.severity = none
+
+# CS8604: Possible null reference argument.
+dotnet_diagnostic.CS8604.severity = none
+
+# IDE0066: Convert switch statement to expression
+csharp_style_prefer_switch_expression = false

@@ -1,26 +1,29 @@
+using System;
+using System.IO;
+
 namespace PluralkitAPI.Environment
 {
-    using System;
-    using System.IO;
-
     public static class DotEnv
     {
         public static void Load(string filePath)
         {
             if (!File.Exists(filePath))
-                return;
-
-            foreach (var line in File.ReadAllLines(filePath))
             {
-                var parts = line.Split(
-                    '=',
-                    StringSplitOptions.RemoveEmptyEntries);
+                return;
+            }
+
+            foreach (string line in File.ReadAllLines(filePath))
+            {
+                string[] parts = line.Split('=',
+                                            StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length != 2)
+                {
                     continue;
+                }
 
-                Environment.SetEnvironmentVariable(parts[0], parts[1]);
-                Environment.GetEnvironmentVariable(parts[0]);
+                System.Environment.SetEnvironmentVariable(parts[0], parts[1]);
+                _ = System.Environment.GetEnvironmentVariable(parts[0]);
             }
         }
     }
