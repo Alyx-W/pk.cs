@@ -44,25 +44,6 @@ namespace PluralkitAPI
             /// <summary>The privacy of the system's switch history. Defaults to public. Patchable.</summary>
             [JsonProperty("front_history_privacy")]
             public string? FrontHistoryPrivacy { get; set; }
-
-            public static System FromJson(string json)
-            {
-                return JsonConvert.DeserializeObject<System>(json);
-            }
-            public static System FromDict(Dictionary<string, object?> dict)
-            {
-                string? json = JsonConvert.SerializeObject(dict);
-                return FromJson(json);
-            }
-            public string ToJson()
-            {
-                return JsonConvert.SerializeObject(this);
-            }
-            public Dictionary<string, object?> ToDict()
-            {
-                string? json = JsonConvert.SerializeObject(this);
-                return JsonConvert.DeserializeObject<Dictionary<string, object?>>(json);
-            }
         }
 
         /// <summary>
@@ -72,7 +53,7 @@ namespace PluralkitAPI
         {
             /// <summary>The 5 character unique identifier. Automatically generated at creation. Non-patchable.</summary>
             [JsonProperty("id")]
-            public string ID { get; set; } = null!;
+            public string? ID { get; set; }
             /// <summary>The name of the member. Required at creation. Patchable.</summary>
             [JsonProperty("name")]
             public string? Name { get; set; } = null!;
@@ -96,7 +77,7 @@ namespace PluralkitAPI
             public List<ProxyTag> ProxyTags { get; set; } = null!;
             /// <summary>Whether the proxy tags the member used to proxy the message will be kept (Will default to the highest set of proxy tags in the case of auto-proxy). Defaults to false. Patchable.</summary>
             [JsonProperty("keep_proxy")]
-            public bool? KeepProxy { get; set; }
+            public bool KeepProxy { get; set; }
             /// <summary>The DateTime the member was created at. Non-patchable.</summary>
             [JsonProperty("created")]
             public DateTime? Created { get; set; }
@@ -144,26 +125,6 @@ namespace PluralkitAPI
             /// <summary>The members (IDs) currently fronting at the time of the switch.</summary>
             [JsonProperty("members")]
             public List<string> Members { get; set; } = null!;
-
-            public static Switches FromJson(string json)
-            {
-                return JsonConvert.DeserializeObject<Switches>(json);
-            }
-            public static Switches FromDict(Dictionary<string, object> dict)
-            {
-                string? json = JsonConvert.SerializeObject(dict);
-                return JsonConvert.DeserializeObject<Switches>(json);
-            }
-            public string ToJson()
-            {
-                return JsonConvert.SerializeObject(this);
-            }
-
-            public Dictionary<string, object> ToDict()
-            {
-                string json = JsonConvert.SerializeObject(this);
-                return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-            }
         }
 
         /// <summary>
@@ -176,7 +137,7 @@ namespace PluralkitAPI
             public DateTime Timestamp { get; set; }
             /// <summary>The members (objects) currently fronting at the time of the query.</summary>
             [JsonProperty("members")]
-            public List<Models.Member> Members { get; set; } = null!;
+            public List<Member> Members { get; set; } = null!;
         }
 
         /// <summary>
@@ -201,10 +162,10 @@ namespace PluralkitAPI
             public string Channel { get; set; } = null!;
             /// <summary>The system that sent the message.</summary>
             [JsonProperty("system")]
-            public Models.System System { get; set; } = null!;
+            public System System { get; set; } = null!;
             /// <summary>The member that sent the message.</summary>
             [JsonProperty("member")]
-            public Models.Member Member { get; set; } = null!;
+            public Member Member { get; set; } = null!;
         }
     }
 }

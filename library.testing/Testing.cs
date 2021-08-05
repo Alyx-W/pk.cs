@@ -3,7 +3,8 @@ using System.IO;
 using Xunit;
 using PluralkitAPI.Environment;
 using PluralkitAPI.Client;
-
+using PluralkitAPI.Models;
+using System.Collections.Generic;
 
 namespace library.testing
 {
@@ -36,28 +37,50 @@ namespace library.testing
 
             _ = Assert.IsType<PluralkitAPI.Models.System>(system);
         }
-        // [Fact]
-        // public void TestingCreateMember()
-        // {
-        //     PKClient client = new PKClient(this.token);
-        // }
+        [Fact]
+        public void TestingCreateAndDeleteMember()
+        {
+            PKClient client = new(Token);
+
+            var member = new Member
+            {
+                Name = "TestyMcTestFace",
+                ProxyTags = new List<ProxyTag> { new ProxyTag { Prefix = "test;", Suffix = null } },
+                KeepProxy = true
+            };
+
+            var createdMember = client.CreateMember(member);
+
+            client.DeleteMember(createdMember.ID);
+
+            try
+            {
+                client.GetMember(createdMember.ID);
+                throw new Exception($"Member {createdMember.ID} was not deleted.");
+            }
+            catch
+            {
+                ;
+            }
+        }
 
         [Fact]
         public void TestingGetMember()
         {
-            PluralkitAPI.Models.Member member = new PKClient(null).GetMember("cewel");
+            Member member = new PKClient(null).GetMember("cewel");
 
-            _ = Assert.IsType<PluralkitAPI.Models.Member>(member);
+            _ = Assert.IsType<Member>(member);
         }
-        /*
         [Fact]
-        public void TestingSetMember() 
-        { 
-            var client = new PKClient("");
-            var member = client.SetMember("cewel");
+        public void TestingSetMember()
+        {
+            var client = new PKClient(Token);
+            var editMember = client.GetMember("cewel");
+
+            var member = client.SetMember(editMember);
 
             Assert.IsType<Member>(member);
-        } */
 
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace PluralkitAPI
         /// </param>
         public class PKClient
         {
-            public string? token;
+            private readonly string? token;
             private IRestClient Client { get; set; }
 
             public PKClient(string? token)
@@ -53,7 +53,7 @@ namespace PluralkitAPI
                 switch ((int)response.StatusCode)
                 {
                     case 200:
-                        return Models.System.FromJson(response.Content);
+                        return JsonConvert.DeserializeObject<Models.System>(response.Content);
                     case 404:
                         if (token == null)
                         {
@@ -104,7 +104,7 @@ namespace PluralkitAPI
             /// Fetches the switches of the system.
             /// </summary>
             /// <param name="system">
-            /// The <see cref="Models.System.ID"/> of the system
+            /// The <see cref="Models.System.ID"/> of the system.
             /// </param>
             /// <returns>
             /// The fetched <see cref="Switches"/> object.
@@ -143,7 +143,7 @@ namespace PluralkitAPI
             /// Fetches the current fronters of a system.
             /// </summary>
             /// <param name="system">
-            /// The id of the system whose fronters you want to fetch.
+            /// The <see cref="Models.System.ID"/> of the system.
             /// </param>
             /// <returns>
             /// A <see cref="Fronters"/>object.
@@ -184,7 +184,7 @@ namespace PluralkitAPI
             /// Gets the specified member.
             /// </summary>
             /// <param name="member">
-            /// The member to get, must be a pluralkit member id."
+            /// The <see cref="Member.ID"/> of the system.
             /// </param>
             /// <returns>
             /// The fetched <see cref="Member"/> object.
@@ -206,18 +206,19 @@ namespace PluralkitAPI
             }
 
             /// <summary>
-            /// 
+            /// Edits a specified member.
             /// </summary>
             /// <param name="member">
-            ///
+            /// A <see cref="Member"/> object to change said member to match to.
             /// </param>
             /// <returns>
-            ///
+            /// The edited <see cref="Member"/> object returned by the API.
             /// </returns>
             public Member SetMember(Member member)
             {
                 IRestRequest request = new RestRequest("m/{member}/")
-                    .AddUrlSegment("member", member.ID);
+                    .AddUrlSegment("member", member.ID)
+                    .AddHeader("Content-Type", "application/json");
 
                 IRestResponse? response = Client.Patch(request);
 
@@ -237,17 +238,19 @@ namespace PluralkitAPI
             }
 
             /// <summary>
-            /// 
+            /// Creates a new member.
             /// </summary>
             /// <param name="member">
-            /// 
+            /// A <see cref="Member"/> object that the new member will match.
             /// </param>
             /// <returns>
-            ///
+            /// The new <see cref="Member"/> object.
             /// </returns>
             public Member CreateMember(Member member)
             {
-                IRestRequest request = new RestRequest("/m/", Method.POST);
+                IRestRequest request = new RestRequest("/m/")
+                    .AddJsonBody(JsonConvert.SerializeObject(member))
+                    .AddHeader("Content-Type", "application/json");
 
                 IRestResponse? response = Client.Post(request);
 
@@ -265,9 +268,10 @@ namespace PluralkitAPI
             }
 
             /// <summary>
-            /// 
+            /// Deletes a system member with specified ID.
             /// </summary>
             /// <param name="member">
+            /// The ID of the member to delete.
             /// </param>
             public void DeleteMember(string member)
             {
@@ -278,7 +282,7 @@ namespace PluralkitAPI
 
                 switch ((int)response.StatusCode)
                 {
-                    case 204:
+                    case 200:
                         break;
                     case 401:
                         throw new Unauthorized();
@@ -290,6 +294,67 @@ namespace PluralkitAPI
                         throw new HttpError(response);
                 }
 
+            }
+
+
+            /// <summary>
+            /// Creates a new switch.
+            /// </summary>
+            /// <param name="members">
+            /// A array of members to be included in the switch.
+            /// </param>
+            public void CreateSwitch(string[] members)
+            {
+
+                IRestRequest request = new RestRequest("/s/switches")
+                    .AddJsonBody(JsonConvert.SerializeObject(members));
+
+                IRestResponse? response = Client.Post(request);
+
+                switch ((int)response.StatusCode)
+                {
+                    case 204:
+                        break;
+                    case 401:
+                        throw new Unauthorized();
+                    case 403:
+                        throw new AccessForbidden();
+                    case 404:
+                        throw new SystemNotFound();
+                    default:
+                        throw new HttpError(response);
+                }
+            }
+
+            /// <summary>
+            /// Fetches a message proxied by pluralkit.
+            /// </summary>
+            /// <param name="id">
+            /// The ID of the message.
+            /// </param>
+            /// <returns>
+            /// The proxied message as represented by the API.
+            /// </returns>
+            public Message GetMessage(string id)
+            {
+                IRestRequest request = new RestRequest("/msg/{id}")
+                    .AddUrlSegment("id", id);
+
+                IRestResponse? response = Client.Get(request);
+
+                switch ((int)response.StatusCode)
+                {
+                    case 204:
+                        return JsonConvert.DeserializeObject<Message>(response.Content);
+                    case 401:
+                        throw new Unauthorized();
+                    case 403:
+                        throw new AccessForbidden();
+                    case 404:
+                        throw new MessageNotFound(id);
+                    default:
+                        throw new HttpError(response);
+                }
             }
         }
     }

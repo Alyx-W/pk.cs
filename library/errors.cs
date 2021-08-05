@@ -16,7 +16,7 @@ namespace PluralkitAPI
             {
             }
         }
-        public class AccessForbidden: Exception
+        public class AccessForbidden : Exception
         {
             public AccessForbidden() : base("Your token does not correspond to the system whose private information you're attempting to fetch.")
             {
@@ -34,6 +34,12 @@ namespace PluralkitAPI
         public class MemberNotFound : Exception
         {
             public MemberNotFound(string id) : base($"{id} is not a valid member id.")
+            {
+            }
+        }
+        public class MessageNotFound : Exception
+        {
+            public MessageNotFound(string id) : base($"{id} does not appear to be an id of a message proxied by pluralkit.")
             {
             }
         }
